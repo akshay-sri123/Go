@@ -9,7 +9,7 @@ import (
 func generateNumbers(buffChan chan int, wg *sync.WaitGroup) {
 	for i := 0; i < 100; i++ {
 		buffChan <- i
-		fmt.Printf("%d ", <-buffChan)
+		// fmt.Printf("%d ", <-buffChan)
 		time.Sleep(100 * time.Millisecond)
 	}
 	close(buffChan)
@@ -23,6 +23,9 @@ func main() {
 	wg.Add(1)
 	fmt.Println("Start of the concurrent run.")
 	go generateNumbers(buffChannel, &wg)
+	for elem := range buffChannel {
+		fmt.Printf("%d ", elem)
+	}
 	wg.Wait()
 	fmt.Println("End of the concurrent run.")
 }
